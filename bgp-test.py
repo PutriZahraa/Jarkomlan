@@ -184,7 +184,7 @@ class OSPFLab(Topo):
 								intfName2='R31-eth2', params2={'ip': '10.100.2.2/24'})
 
 		# iBGP logical link for AS100 (loopback IPs)
-		self.addLink(R11, R14)
+		self.addLink(R11, R14, intfName1='R11-lo', intfName2='R14-lo')
 
 		# In this setup, the iBGP connection between R11 and R14 uses "loopback" addresses set manually in the CLI.
 
