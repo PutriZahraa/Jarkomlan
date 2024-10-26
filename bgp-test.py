@@ -116,55 +116,78 @@ class OSPFLab(Topo):
 						( '/var/run' ),
 						'/var/mn' ]
 		
-		#  AS100
+		# AS100
 		C11 = self.addHost('C11', ip="172.16.1.2/24", defaultRoute="via 172.16.1.1")
-		R11 = self.addNode("R11", cls=LinuxRouter, ip=None, privateDirs=privateDirs, inNamespace=True)
-		R12 = self.addNode("R12", cls=LinuxRouter, ip=None, privateDirs=privateDirs, inNamespace=True)
-		R13 = self.addNode("R13", cls=LinuxRouter, ip=None, privateDirs=privateDirs, inNamespace=True)
-		R14 = self.addNode("R14", cls=LinuxRouter, ip=None, privateDirs=privateDirs, inNamespace=True)
+		R11 = self.addNode("R11", cls=LinuxRouter, ip="10.11.0.1/32", privateDirs=privateDirs, inNamespace=True)
+		R12 = self.addNode("R12", cls=LinuxRouter, ip="10.11.0.2/32", privateDirs=privateDirs, inNamespace=True)
+		R13 = self.addNode("R13", cls=LinuxRouter, ip="10.11.0.3/32", privateDirs=privateDirs, inNamespace=True)
+		R14 = self.addNode("R14", cls=LinuxRouter, ip="10.11.0.4/32", privateDirs=privateDirs, inNamespace=True)
 		S11 = self.addSwitch("S11", inNamespace=True)
-		# add links
-		self.addLink(S11, R12)
+
+		# Add links with IP addresses
+		self.addLink(S11, R12, intfName2='R12-eth0', params2={'ip': '172.16.1.1/24'})
 		self.addLink(S11, C11)
-		self.addLink(R11, R12)
-		self.addLink(R11, R13)
-		self.addLink(R12, R14)
-		self.addLink(R13, R14)
+
+		self.addLink(R11, R12, intfName1='R11-eth0', params1={'ip': '10.11.1.1/24'},
+								intfName2='R12-eth1', params2={'ip': '10.11.1.2/24'})
+		self.addLink(R11, R13, intfName1='R11-eth1', params1={'ip': '10.11.2.1/24'},
+								intfName2='R13-eth0', params2={'ip': '10.11.2.2/24'})
+		self.addLink(R12, R14, intfName1='R12-eth2', params1={'ip': '10.11.3.1/24'},
+								intfName2='R14-eth0', params2={'ip': '10.11.3.2/24'})
+		self.addLink(R13, R14, intfName1='R13-eth1', params1={'ip': '10.11.4.1/24'},
+								intfName2='R14-eth1', params2={'ip': '10.11.4.2/24'})
 
 		# AS200
 		C22 = self.addHost('C22', ip="172.17.1.2/24", defaultRoute="via 172.17.1.1")
-		R21 = self.addNode("R21", cls=LinuxRouter, ip=None, privateDirs=privateDirs, inNamespace=True)
-		R22 = self.addNode("R22", cls=LinuxRouter, ip=None, privateDirs=privateDirs, inNamespace=True)
-		R23 = self.addNode("R23", cls=LinuxRouter, ip=None, privateDirs=privateDirs, inNamespace=True)
-		R24 = self.addNode("R24", cls=LinuxRouter, ip=None, privateDirs=privateDirs, inNamespace=True)
+		R21 = self.addNode("R21", cls=LinuxRouter, ip="10.12.0.1/32", privateDirs=privateDirs, inNamespace=True)
+		R22 = self.addNode("R22", cls=LinuxRouter, ip="10.12.0.2/32", privateDirs=privateDirs, inNamespace=True)
+		R23 = self.addNode("R23", cls=LinuxRouter, ip="10.12.0.3/32", privateDirs=privateDirs, inNamespace=True)
+		R24 = self.addNode("R24", cls=LinuxRouter, ip="10.12.0.4/32", privateDirs=privateDirs, inNamespace=True)
 		S22 = self.addSwitch("S22", inNamespace=True)
-		self.addLink(S22, R21)
+
+		self.addLink(S22, R21, intfName2='R21-eth0', params2={'ip': '172.17.1.1/24'})
 		self.addLink(S22, C22)
-		self.addLink(R21, R22)
-		self.addLink(R21, R23)
-		self.addLink(R22, R24)
-		self.addLink(R23, R24)
+
+		self.addLink(R21, R22, intfName1='R21-eth1', params1={'ip': '10.12.1.1/24'},
+								intfName2='R22-eth0', params2={'ip': '10.12.1.2/24'})
+		self.addLink(R21, R23, intfName1='R21-eth2', params1={'ip': '10.12.2.1/24'},
+								intfName2='R23-eth0', params2={'ip': '10.12.2.2/24'})
+		self.addLink(R22, R24, intfName1='R22-eth1', params1={'ip': '10.12.3.1/24'},
+								intfName2='R24-eth0', params2={'ip': '10.12.3.2/24'})
+		self.addLink(R23, R24, intfName1='R23-eth1', params1={'ip': '10.12.4.1/24'},
+								intfName2='R24-eth1', params2={'ip': '10.12.4.2/24'})
 
 		# AS300
 		C33 = self.addHost('C33', ip="172.18.1.2/24", defaultRoute="via 172.18.1.1")
-		R31 = self.addNode("R31", cls=LinuxRouter, ip=None, privateDirs=privateDirs, inNamespace=True)
-		R32 = self.addNode("R32", cls=LinuxRouter, ip=None, privateDirs=privateDirs, inNamespace=True)
-		R33 = self.addNode("R33", cls=LinuxRouter, ip=None, privateDirs=privateDirs, inNamespace=True)
-		R34 = self.addNode("R34", cls=LinuxRouter, ip=None, privateDirs=privateDirs, inNamespace=True)
+		R31 = self.addNode("R31", cls=LinuxRouter, ip="10.13.0.1/32", privateDirs=privateDirs, inNamespace=True)
+		R32 = self.addNode("R32", cls=LinuxRouter, ip="10.13.0.2/32", privateDirs=privateDirs, inNamespace=True)
+		R33 = self.addNode("R33", cls=LinuxRouter, ip="10.13.0.3/32", privateDirs=privateDirs, inNamespace=True)
+		R34 = self.addNode("R34", cls=LinuxRouter, ip="10.13.0.4/32", privateDirs=privateDirs, inNamespace=True)
 		S33 = self.addSwitch("S33", inNamespace=True)
-		self.addLink(S33, R33)
-		self.addLink(S33, C33)
-		self.addLink(R31, R32)
-		self.addLink(R31, R33)
-		self.addLink(R32, R34)
-		self.addLink(R33, R34)
-  
-		# eBGP Links between ASes
-		self.addLink(R14, R21)  # AS100 to AS200
-		self.addLink(R24, R31)  # AS200 to AS300
 
-		# iBGP logical link for AS100
+		self.addLink(S33, R33, intfName2='R33-eth0', params2={'ip': '172.18.1.1/24'})
+		self.addLink(S33, C33)
+
+		self.addLink(R31, R32, intfName1='R31-eth0', params1={'ip': '10.13.1.1/24'},
+								intfName2='R32-eth0', params2={'ip': '10.13.1.2/24'})
+		self.addLink(R31, R33, intfName1='R31-eth1', params1={'ip': '10.13.2.1/24'},
+								intfName2='R33-eth1', params2={'ip': '10.13.2.2/24'})
+		self.addLink(R32, R34, intfName1='R32-eth1', params1={'ip': '10.13.3.1/24'},
+								intfName2='R34-eth0', params2={'ip': '10.13.3.2/24'})
+		self.addLink(R33, R34, intfName1='R33-eth2', params1={'ip': '10.13.4.1/24'},
+								intfName2='R34-eth1', params2={'ip': '10.13.4.2/24'})
+
+		# eBGP Links between ASes
+		self.addLink(R14, R21, intfName1='R14-eth2', params1={'ip': '10.100.1.1/24'},
+								intfName2='R21-eth3', params2={'ip': '10.100.1.2/24'})
+		self.addLink(R24, R31, intfName1='R24-eth2', params1={'ip': '10.100.2.1/24'},
+								intfName2='R31-eth2', params2={'ip': '10.100.2.2/24'})
+
+		# iBGP logical link for AS100 (loopback IPs)
 		self.addLink(R11, R14)
+
+		# In this setup, the iBGP connection between R11 and R14 uses "loopback" addresses set manually in the CLI.
+
 		
 		confdir = Path(config_path % {"name": ""})
 		if (not flags.generateConfig):
